@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -18,6 +20,13 @@ import javax.persistence.OneToMany;
  * @author Mathias Nielsen
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Address.deleteAllRows", query = "DELETE FROM Address"),
+    @NamedQuery(name = "Address.getAddress", query = "SELECT a FROM Address a "
+            + "WHERE a.city.zip = :zip AND a.street = :street "
+            + "AND a.houseNumber = :houseNumber "
+            + "AND a.floor = :floor")
+})
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,7 +1,6 @@
 package dtos;
 
 import entities.Address;
-import entities.City;
 
 /**
  *

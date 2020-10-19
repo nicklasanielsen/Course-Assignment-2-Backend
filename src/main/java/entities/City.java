@@ -26,9 +26,9 @@ import javax.persistence.OneToMany;
 public class City implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "zip", nullable = false)
+    @Column(nullable = false)
     private int zip;
-    @Column(name = "city", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String cityName;
     
     @OneToMany(mappedBy = "city", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
