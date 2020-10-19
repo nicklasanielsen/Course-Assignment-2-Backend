@@ -1,7 +1,14 @@
 package facades;
 
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
+import entities.Address;
+import entities.City;
+import entities.Hobby;
 import entities.Person;
+import entities.Phone;
+import entities.PhoneType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -49,8 +56,40 @@ public class PersonFacade {
     }
 
     private Person convertFromDTO(PersonDTO personDTO) {
-        // TODO 
-        return null;
+        Person person = new Person();
+        Address address = new Address();
+        City city = new City();
+        List<Phone> phones = new ArrayList<>();
+        List<Hobby> hobbies = new ArrayList<>();
+        
+        String[] personParts = personDTO.getFullName().split(" ");
+        String[] addressParts = personDTO.getAddress().getAddress().split("(?<=\\D)(?=\\d)");
+        String[] cityParts = personDTO.getAddress().getCity().split(" ");
+        
+        city.setZip(Integer.parseInt(cityParts[0]));
+        city.setCityName(cityParts[1]);
+        
+        address.setStreet(addressParts[0]);
+        address.setHouseNumber(Integer.parseInt(addressParts[1]));
+        address.setFloor(addressParts[2]);
+        address.setCity(city);
+        
+        person.setFirstName(personParts[0]);
+        person.setLastName(personParts[1]);
+        person.setEmail(personDTO.getEmail());
+        person.setAddress(address);
+        
+        for(PhoneDTO phone : personDTO.getPhones()){
+            phones.add(new Phone(phone.getNumber(), new PhoneType(phone.getType())));
+        }
+        person.setPhones(phones);
+        
+        for(HobbyDTO hobby : personDTO.getHobbies()){
+            hobbies.add(new Hobby(hobby.getHobbyName(), hobby.getHobbyDescription()));
+        }
+        person.setHobbies(hobbies);
+        
+        return person;
     }
 
     private boolean incomingDataIsValid(PersonDTO incomingData) {
