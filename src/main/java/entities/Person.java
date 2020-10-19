@@ -114,7 +114,6 @@ public class Person implements Serializable {
         
         if(hobby != null){
             this.hobbies.add(hobby);
-            hobby.set(this);
             hobby.getPersons().add(this);
         }
     }
