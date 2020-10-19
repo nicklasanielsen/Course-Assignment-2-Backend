@@ -77,6 +77,12 @@ public class Hobby implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -94,11 +100,10 @@ public class Hobby implements Serializable {
         if (!Objects.equals(this.hobbyDescription, other.hobbyDescription)) {
             return false;
         }
-        if (!Objects.equals(this.person, other.person)) {
+        if (!Objects.equals(this.persons, other.persons)) {
             return false;
         }
         return true;
     }
-    
     
 }
