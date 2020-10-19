@@ -22,9 +22,9 @@ public class City implements Serializable {
     @Column(name = "zip", nullable = false)
     private int zip;
     @Column(name = "city", nullable = false, length = 100)
-    private String city;
+    private String cityName;
     
-    @OneToMany( mappedBy = "city", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "city", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Address> addresses;
 
     public City() {
@@ -32,11 +32,9 @@ public class City implements Serializable {
 
     public City(int zip, String city) {
         this.zip = zip;
-        this.city = city;
+        this.cityName = city;
         addresses = new ArrayList<>();
-    }
-    
-    
+    } 
 
     public int getZip() {
         return zip;
@@ -46,19 +44,19 @@ public class City implements Serializable {
         this.zip = zip;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
     
     public void addAddress(Address address) {
-        addresses.add(address)
+        addresses.add(address);
                 
             if(address != null){
-                address.setCity(this)
+                address.setCity(this);
             }
     }
     
@@ -89,7 +87,7 @@ public class City implements Serializable {
         if (this.zip != other.zip) {
             return false;
         }
-        if (!Objects.equals(this.city, other.city)) {
+        if (!Objects.equals(this.cityName, other.cityName)) {
             return false;
         }
         return true;
