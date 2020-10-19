@@ -68,12 +68,12 @@ public class Hobby implements Serializable {
         this.hobbyDescription = hobbyDescription;
     }
 
-    public Person getPerson() {
-        return person;
+    public List<Person> getPersons() {
+        return persons;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
 
     @Override
