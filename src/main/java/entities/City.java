@@ -33,7 +33,7 @@ public class City implements Serializable {
     public City(int zip, String city) {
         this.zip = zip;
         this.cityName = city;
-        addresses = new ArrayList<>();
+        this.addresses = new ArrayList<>();
     } 
 
     public int getZip() {

@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -43,12 +44,12 @@ public class Address implements Serializable {
     public Address() {
     }
 
-    public Address(String street, int houseNumber, String floor, City city, List<Person> persons) {
+    public Address(String street, int houseNumber, String floor, City city) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.floor = floor;
         this.city = city;
-        this.persons = persons;
+        this.persons = new ArrayList<>();
     }
 
     public Long getId() {

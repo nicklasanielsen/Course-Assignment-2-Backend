@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -24,26 +25,39 @@ public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(length = 45, nullable = false)
     private String firstName;
-    
+
     @Column(length = 45, nullable = false)
     private String lastName;
-    
+
     @Column(length = 100, nullable = false)
     private String email;
-    
+
     @Column(nullable = false)
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
-    
+
     @Column(nullable = false)
     @OneToMany(mappedBy = "phones", cascade = CascadeType.PERSIST)
     private List<Phone> phones;
-    
+
     @ManyToMany(mappedBy = "hobbies", cascade = CascadeType.PERSIST)
     private List<Hobby> hobbies;
+
+    public Person() {
+    }
+
+    public Person(Long id, String firstName, String lastName, String email, Address address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+        this.phones = new ArrayList<>();
+        this.hobbies = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -92,11 +106,11 @@ public class Person implements Serializable {
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
     }
-    
+
     public void addPhone(Phone phone) {
         phones.add(phone);
-        
-        if(phone != null){
+
+        if (phone != null) {
             phone.setPerson(this);
         }
     }
@@ -108,11 +122,11 @@ public class Person implements Serializable {
     public void setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
-    
+
     public void addHobby(Hobby hobby) {
         hobbies.add(hobby);
-        
-        if(hobby != null){
+
+        if (hobby != null) {
             this.hobbies.add(hobby);
             hobby.getPersons().add(this);
         }
