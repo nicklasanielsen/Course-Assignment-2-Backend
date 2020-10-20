@@ -3,6 +3,8 @@ package rest;
 import dtos.PersonDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import exceptions.InvalidInputException;
+import exceptions.MissingInputException;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
@@ -21,25 +23,25 @@ import utils.EMF_Creator;
  */
 @Path("person")
 public class PersonResource {
-    
+
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    
+
     @GET
     @Path("phone/{number}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonsByPhone(@PathParam("number") int number){
+    public Response getPersonsByPhone(@PathParam("number") int number) throws InvalidInputException {
         return Response.ok(FACADE.getPersonsByPhone(number)).build();
     }
-    
+
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addPerson(String person){
+    public Response addPerson(String person) throws MissingInputException, InvalidInputException {
         PersonDTO incomingData = GSON.fromJson(person, PersonDTO.class);
         PersonDTO personAdded = FACADE.createPerson(incomingData);
         return Response.ok(personAdded).build();
     }
-    
+
 }

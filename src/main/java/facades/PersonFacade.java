@@ -9,6 +9,8 @@ import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 import entities.PhoneType;
+import exceptions.InvalidInputException;
+import exceptions.MissingInputException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -93,41 +95,39 @@ public class PersonFacade {
         return person;
     }
 
-    private boolean incomingDataIsValid(PersonDTO incomingData) {
+    private boolean incomingDataIsValid(PersonDTO incomingData) throws MissingInputException, InvalidInputException {
         if (incomingData.getFullName().isEmpty()) {
-            // TODO Throw exception
+            throw new MissingInputException("For- eller efternavn mangler");
         } else if (incomingData.getEmail().isEmpty()) {
-            // TODO Throw exception
+            throw new MissingInputException("E-mail adresse mangler");
         } else if (EmailValidator.getInstance().isValid(incomingData.getEmail())) {
-            // TODO Throw exception
+            throw new InvalidInputException("E-mail adresse ej gyldig");
         } else if (incomingData.getPhones().isEmpty()) {
-            // TODO Throw exception
+            throw new MissingInputException("Telefon oplysninger ej gyldige");
         } else if (incomingData.getAddress() == null) {
-            // TODO Throw exception
-        } else if (incomingData.getHobbies().isEmpty()) {
-            // TODO Throw exception
+            throw new MissingInputException("Adresse mangler");
         }
 
-        incomingData.getPhones().forEach(phoneDTO -> {
+        for (PhoneDTO phoneDTO : incomingData.getPhones()) {
             if (phoneDTO.getNumber() == 0) {
-                // TODO Throw exception
+                throw new MissingInputException("Telefonnummer mangler");
             } else if (phoneDTO.getType().isEmpty()) {
-                // TODO Throw exception
+                throw new MissingInputException("Telefon type mangler");
             }
-        });
+        }
 
-        incomingData.getHobbies().forEach(hobbyDTO -> {
+        for (HobbyDTO hobbyDTO : incomingData.getHobbies()) {
             if (hobbyDTO.getHobbyName().isEmpty()) {
-                // TODO Throw exception
+                throw new MissingInputException("Hobby navn mangler");
             } else if (hobbyDTO.getHobbyDescription().isEmpty()) {
-                // TODO Throw exception
+                throw new MissingInputException("Hobby beskivelse mangler");
             }
-        });
+        }
 
         return true;
     }
 
-    public PersonDTO createPerson(PersonDTO incomingData) {
+    public PersonDTO createPerson(PersonDTO incomingData) throws MissingInputException, InvalidInputException {
         incomingDataIsValid(incomingData);
 
         EntityManager em = getEntityManager();
@@ -145,17 +145,15 @@ public class PersonFacade {
                 em.getTransaction().rollback();
             }
 
-            // TODO throw exception
+            throw new RuntimeException("Personen kunne ikke oprettes, prøv igen senere");
         } finally {
             em.close();
         }
-
-        return null; // To be removed then exception handling have been added
     }
 
-    public List<PersonDTO> getPersonsByPhone(int number) {
+    public List<PersonDTO> getPersonsByPhone(int number) throws InvalidInputException {
         if (String.valueOf(number).length() != 8) {
-            // TODO throw exception
+            throw new InvalidInputException("Telefonnummer ej gyldigt");
         }
 
         EntityManager em = getEntityManager();
@@ -168,13 +166,9 @@ public class PersonFacade {
             List<PersonDTO> personDTOs = convertToDTO(persons);
 
             return personDTOs;
-        } catch (Exception e) {
-            // TODO throw exception
         } finally {
             em.close();
         }
-
-        return null; // To be removed then exception handling have been added
     }
 
 }
