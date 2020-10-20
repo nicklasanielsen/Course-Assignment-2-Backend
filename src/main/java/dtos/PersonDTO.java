@@ -13,8 +13,8 @@ public class PersonDTO {
 
     private String fullName;
     private String email;
-    private List<PhoneDTO> phones;
     private AddressDTO address;
+    private List<PhoneDTO> phones;
     private List<HobbyDTO> hobbies;
 
     public PersonDTO(Person person) {

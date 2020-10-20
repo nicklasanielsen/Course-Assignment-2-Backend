@@ -1,11 +1,14 @@
 package facades;
 
-import dtos.AddressDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
+import entities.Address;
+import entities.City;
+import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import entities.PhoneType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -54,41 +57,73 @@ public class PersonFacade {
     }
 
     private Person convertFromDTO(PersonDTO personDTO) {
-        // TODO 
-        return null;
+        Person person = new Person();
+        Address address = new Address();
+        City city = new City();
+        List<Phone> phones = new ArrayList<>();
+        List<Hobby> hobbies = new ArrayList<>();
+
+        String[] personParts = personDTO.getFullName().split(" ");
+        String[] addressParts = personDTO.getAddress().getAddress().split("(?<=\\D)(?=\\d)");
+        String[] cityParts = personDTO.getAddress().getCity().split(" ");
+
+        city.setZip(Integer.parseInt(cityParts[0]));
+        city.setCityName(cityParts[1]);
+
+        address.setStreet(addressParts[0]);
+        address.setHouseNumber(Integer.parseInt(addressParts[1]));
+        address.setFloor(addressParts[2]);
+        address.setCity(city);
+
+        person.setFirstName(personParts[0]);
+        person.setLastName(personParts[1]);
+        person.setEmail(personDTO.getEmail());
+        person.setAddress(address);
+
+        personDTO.getPhones().forEach(phone -> {
+            phones.add(new Phone(phone.getNumber(), new PhoneType(phone.getType())));
+        });
+        person.setPhones(phones);
+
+        personDTO.getHobbies().forEach(hobby -> {
+            hobbies.add(new Hobby(hobby.getHobbyName(), hobby.getHobbyDescription()));
+        });
+        person.setHobbies(hobbies);
+
+        return person;
     }
 
     private boolean incomingDataIsValid(PersonDTO incomingData) {
-        if(incomingData.getFullName().isEmpty()){
+        if (incomingData.getFullName().isEmpty()) {
             // TODO Throw exception
-        } else if(incomingData.getEmail().isEmpty()){
+        } else if (incomingData.getEmail().isEmpty()) {
             // TODO Throw exception
-        } else if(EmailValidator.getInstance().isValid(incomingData.getEmail())){
+        } else if (EmailValidator.getInstance().isValid(incomingData.getEmail())) {
             // TODO Throw exception
-        } else if(incomingData.getPhones().isEmpty()){
+        } else if (incomingData.getPhones().isEmpty()) {
             // TODO Throw exception
-        } else if(incomingData.getAddress() == null){
+        } else if (incomingData.getAddress() == null) {
             // TODO Throw exception
-        } else if(incomingData.getHobbies().isEmpty()){
+        } else if (incomingData.getHobbies().isEmpty()) {
             // TODO Throw exception
         }
-        
+
         incomingData.getPhones().forEach(phoneDTO -> {
-            if(phoneDTO.getNumber() == 0){
+            if (phoneDTO.getNumber() == 0) {
                 // TODO Throw exception
-            } else if(phoneDTO.getType().isEmpty()){
+            } else if (phoneDTO.getType().isEmpty()) {
                 // TODO Throw exception
             }
         });
-        
+
         incomingData.getHobbies().forEach(hobbyDTO -> {
-            if(hobbyDTO.getHobbyName().isEmpty()){
+            if (hobbyDTO.getHobbyName().isEmpty()) {
                 // TODO Throw exception
-            } else if(hobbyDTO.getHobbyDescription().isEmpty()){
+            } else if (hobbyDTO.getHobbyDescription().isEmpty()) {
                 // TODO Throw exception
             }
         });
-        
+
         return true;
     }
 
@@ -114,7 +149,7 @@ public class PersonFacade {
         } finally {
             em.close();
         }
-        
+
         return null; // To be removed then exception handling have been added
     }
 
