@@ -1,12 +1,17 @@
 package facades;
 
+import dtos.AddressDTO;
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
 import entities.Person;
+import entities.Phone;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import org.apache.commons.validator.EmailValidator;
 
 /**
  *
@@ -54,14 +59,41 @@ public class PersonFacade {
     }
 
     private boolean incomingDataIsValid(PersonDTO incomingData) {
-        // TODO add validation
-        return false;
+        if(incomingData.getFullName().isEmpty()){
+            // TODO Throw exception
+        } else if(incomingData.getEmail().isEmpty()){
+            // TODO Throw exception
+        } else if(EmailValidator.getInstance().isValid(incomingData.getEmail())){
+            // TODO Throw exception
+        } else if(incomingData.getPhones().isEmpty()){
+            // TODO Throw exception
+        } else if(incomingData.getAddress() == null){
+            // TODO Throw exception
+        } else if(incomingData.getHobbies().isEmpty()){
+            // TODO Throw exception
+        }
+        
+        incomingData.getPhones().forEach(phoneDTO -> {
+            if(phoneDTO.getNumber() == 0){
+                // TODO Throw exception
+            } else if(phoneDTO.getType().isEmpty()){
+                // TODO Throw exception
+            }
+        });
+        
+        incomingData.getHobbies().forEach(hobbyDTO -> {
+            if(hobbyDTO.getHobbyName().isEmpty()){
+                // TODO Throw exception
+            } else if(hobbyDTO.getHobbyDescription().isEmpty()){
+                // TODO Throw exception
+            }
+        });
+        
+        return true;
     }
 
     public PersonDTO createPerson(PersonDTO incomingData) {
-        if (!incomingDataIsValid(incomingData)) {
-            // TODO throw expection
-        }
+        incomingDataIsValid(incomingData);
 
         EntityManager em = getEntityManager();
 
@@ -78,17 +110,17 @@ public class PersonFacade {
                 em.getTransaction().rollback();
             }
 
-            // TODO throw expection
+            // TODO throw exception
         } finally {
             em.close();
         }
         
-        return null; // To be removed then expection handling have been added
+        return null; // To be removed then exception handling have been added
     }
 
     public List<PersonDTO> getPersonsByPhone(int number) {
         if (String.valueOf(number).length() != 8) {
-            // TODO throw expection
+            // TODO throw exception
         }
 
         EntityManager em = getEntityManager();
@@ -102,12 +134,12 @@ public class PersonFacade {
 
             return personDTOs;
         } catch (Exception e) {
-            // TODO throw expection
+            // TODO throw exception
         } finally {
             em.close();
         }
 
-        return null; // To be removed then expection handling have been added
+        return null; // To be removed then exception handling have been added
     }
 
 }
