@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -15,13 +17,18 @@ import javax.persistence.OneToMany;
  * @author Nikolaj Larsen
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "City.deleteAllRows", query = "DELETE FROM City"),
+    @NamedQuery(name = "City.getCityByName", query = "SELECT c FROM City c WHERE c.cityName = :cityName"),
+    @NamedQuery(name = "City.getCityByZip", query = "SELECT c FROM City c WHERE c.zip = :zip"),
+    @NamedQuery(name = "City.getCityByNameAndZip", query = "SELECT c FROM City c WHERE c.zip = :zip AND c.cityName = :cityName")
+})
 public class City implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "zip", nullable = false)
+    @Column(nullable = false)
     private int zip;
-    @Column(name = "city", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String cityName;
     
     @OneToMany(mappedBy = "city", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -33,7 +40,7 @@ public class City implements Serializable {
     public City(int zip, String city) {
         this.zip = zip;
         this.cityName = city;
-        addresses = new ArrayList<>();
+        this.addresses = new ArrayList<>();
     } 
 
     public int getZip() {

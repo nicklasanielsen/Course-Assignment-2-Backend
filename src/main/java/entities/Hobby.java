@@ -15,12 +15,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Nikolaj Larsen
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE FROM Hobby"),
+    @NamedQuery(name = "Hobby.getByName", query = "SELECT h FROM Hobby h where h.hobbyName = :hobbyName")
+})
 public class Hobby implements Serializable {
 
     private static final long serialVersionUID = 1L;

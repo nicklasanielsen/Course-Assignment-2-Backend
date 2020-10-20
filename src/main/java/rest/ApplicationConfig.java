@@ -4,7 +4,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 /**
- * 
+ *
  * @author Nicklas Nielsen
  */
 @javax.ws.rs.ApplicationPath("api")
@@ -16,10 +16,10 @@ public class ApplicationConfig extends Application {
         addRestResourceClasses(resources);
         return resources;
     }
-    
+
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
         resources.add(rest.PersonResource.class);
     }
-
+    
 }
