@@ -58,6 +58,10 @@ public class PhoneType implements Serializable {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;

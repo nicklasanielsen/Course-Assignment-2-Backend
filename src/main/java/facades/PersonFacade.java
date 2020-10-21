@@ -83,9 +83,8 @@ public class PersonFacade {
         person.setAddress(address);
 
         personDTO.getPhones().forEach(phone -> {
-            phones.add(new Phone(phone.getNumber(), new PhoneType(phone.getType())));
+            person.addPhone(new Phone(phone.getNumber(), new PhoneType(phone.getType())));
         });
-        person.setPhones(phones);
 
         personDTO.getHobbies().forEach(hobby -> {
             hobbies.add(new Hobby(hobby.getHobbyName(), hobby.getHobbyDescription()));

@@ -111,10 +111,14 @@ public class Person implements Serializable {
     }
 
     public void setPhones(List<Phone> phones) {
-        this.phones = phones;
+        phones.forEach(phone -> {
+            addPhone(phone);
+        });
     }
 
     public void addPhone(Phone phone) {
+        System.out.println("###########33333" + phone.getNumber());
+        System.out.println("###########33333" + phone.getType().getType());
         phones.add(phone);
 
         if (phone != null) {
