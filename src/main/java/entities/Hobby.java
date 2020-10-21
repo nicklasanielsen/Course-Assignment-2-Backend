@@ -25,7 +25,9 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE FROM Hobby"),
-    @NamedQuery(name = "Hobby.getByName", query = "SELECT h FROM Hobby h where h.hobbyName = :hobbyName")
+    @NamedQuery(name = "Hobby.getByName", query = "SELECT h FROM Hobby h WHERE h.hobbyName = :hobbyName"),
+    @NamedQuery(name = "Hobby.getByNameAndDescription", query = "SELECT h FROM Hobby h "
+            + "WHERE h.hobbyName = :hobbyName AND h.hobbyDescription = :hobbyDescription")
 })
 public class Hobby implements Serializable {
 

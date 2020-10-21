@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -17,6 +19,11 @@ import javax.persistence.OneToMany;
  * @author Nicklas Nielsen
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "PhoneType.deleteAllRows", query = "DELETE FROM PhoneType"),
+    @NamedQuery(name = "PhoneType.getType", query = "SELECT p FROM PhoneType p "
+            + "WHERE p.type = :type")
+})
 public class PhoneType implements Serializable {
 
     private static final long serialVersionUID = 1L;
