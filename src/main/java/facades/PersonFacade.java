@@ -9,6 +9,7 @@ import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 import entities.PhoneType;
+import exceptions.DatabaseException;
 import exceptions.InvalidInputException;
 import exceptions.MissingInputException;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-import org.apache.commons.validator.EmailValidator;
 
 /**
  *
@@ -66,7 +66,7 @@ public class PersonFacade {
         List<Hobby> hobbies = new ArrayList<>();
 
         String[] personParts = personDTO.getFullName().split(" ");
-        String[] addressParts = personDTO.getAddress().getAddress().split("(?<=\\D)(?=\\d)");
+        String[] addressParts = personDTO.getAddress().getAddress().split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
         String[] cityParts = personDTO.getAddress().getCity().split(" ");
 
         city.setZip(Integer.parseInt(cityParts[0]));
@@ -96,12 +96,12 @@ public class PersonFacade {
     }
 
     private boolean incomingDataIsValid(PersonDTO incomingData) throws MissingInputException, InvalidInputException {
+        // TODO Add email validation
+        
         if (incomingData.getFullName().isEmpty()) {
             throw new MissingInputException("For- eller efternavn mangler");
         } else if (incomingData.getEmail().isEmpty()) {
             throw new MissingInputException("E-mail adresse mangler");
-        } else if (EmailValidator.getInstance().isValid(incomingData.getEmail())) {
-            throw new InvalidInputException("E-mail adresse ej gyldig");
         } else if (incomingData.getPhones().isEmpty()) {
             throw new MissingInputException("Telefon oplysninger ej gyldige");
         } else if (incomingData.getAddress() == null) {
@@ -127,7 +127,7 @@ public class PersonFacade {
         return true;
     }
 
-    public PersonDTO createPerson(PersonDTO incomingData) throws MissingInputException, InvalidInputException {
+    public PersonDTO createPerson(PersonDTO incomingData) throws MissingInputException, InvalidInputException, DatabaseException {
         incomingDataIsValid(incomingData);
 
         EntityManager em = getEntityManager();
@@ -144,8 +144,8 @@ public class PersonFacade {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-
-            throw new RuntimeException("Personen kunne ikke oprettes, prøv igen senere");
+            
+            throw new DatabaseException("Personen kunne ikke oprettes, prøv igen senere");
         } finally {
             em.close();
         }

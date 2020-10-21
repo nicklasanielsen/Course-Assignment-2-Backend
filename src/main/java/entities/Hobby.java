@@ -33,9 +33,9 @@ public class Hobby implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "hobbyName", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String hobbyName;
-    @Column(name = "hobbyDescription", nullable = false, length = 255)
+    @Column(nullable = false, length = 255)
     private String hobbyDescription;
     
     @ManyToMany

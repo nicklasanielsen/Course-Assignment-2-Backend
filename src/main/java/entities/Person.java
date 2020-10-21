@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,8 +24,7 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Person.deleteAllRows", query = "DELETE FROM Person"),
-    @NamedQuery(name = "Person.getByPhone", query = "SELECT p FROM Person p "
-            + "WHERE p.phone.id = (SELECT n FROM Phone n WHERE n.number = :number")
+    @NamedQuery(name = "Person.getByPhone", query = "SELECT p FROM Person p JOIN p.phones n WHERE n.number = :number")
 })
 public class Person implements Serializable {
 
@@ -42,15 +42,15 @@ public class Person implements Serializable {
     @Column(length = 100, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
-    @Column(nullable = false)
-    @OneToMany(mappedBy = "phones", cascade = CascadeType.PERSIST)
+    @JoinColumn(nullable = false)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Phone> phones;
 
-    @ManyToMany(mappedBy = "hobbies", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
     private List<Hobby> hobbies;
 
     public Person() {

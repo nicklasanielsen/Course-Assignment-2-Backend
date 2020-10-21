@@ -18,6 +18,7 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(exceptions.DatabaseExceptionMapper.class);
         resources.add(exceptions.GenericExceptionMapper.class);
         resources.add(exceptions.InvalidInputExceptionMapper.class);
         resources.add(exceptions.MissingInputExceptionMapper.class);
