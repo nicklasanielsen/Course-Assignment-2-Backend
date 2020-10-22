@@ -20,9 +20,9 @@ public class PersonConverter implements Converter {
         PersonDTO dto = castToDTO(object);
         String firstname, lastname, email;
 
-        firstname = dto.getFullName().split(" ")[0];
-        lastname = dto.getFullName().split(" ")[1];
-        email = dto.getEmail();
+        firstname = dto.getFullName().split(" ")[0].trim();
+        lastname = dto.getFullName().split(" ")[1].trim();
+        email = dto.getEmail().trim();
 
         return new Person(firstname, lastname, email);
     }

@@ -27,8 +27,8 @@ public class HobbyConverter implements Converter {
         HobbyDTO dto = castToDTO(object);
 
         String name, description;
-        name = dto.getHobbyName();
-        description = dto.getHobbyDescription();
+        name = dto.getHobbyName().trim();
+        description = dto.getHobbyDescription().trim();
 
         return HOBBY_FACADE.getHobby(name, description);
     }

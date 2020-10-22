@@ -34,14 +34,14 @@ public class AddressConverter implements Converter {
 
         String[] addressParts = dto.getAddress().split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 
-        street = addressParts[0];
+        street = addressParts[0].trim();
         houseNumber = Integer.parseInt(addressParts[1]);
-        floor = addressParts[2];
+        floor = addressParts[2].trim();
 
         String[] cityParts = dto.getCity().split(" ");
 
         zip = Integer.parseInt(cityParts[0]);
-        cityName = cityParts[1];
+        cityName = cityParts[1].trim();
 
         city = CITY_FACADE.getCity(zip, cityName);
         Address address = ADDRESS_FACADE.getAddress(street, houseNumber, floor, city);

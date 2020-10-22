@@ -28,7 +28,7 @@ public class PhoneConverter implements Converter {
         PhoneDTO dto = castToDTO(object);
 
         int number = dto.getNumber();
-        PhoneType phoneType = PHONE_TYPE_FACADE.getPhoneType(dto.getType());
+        PhoneType phoneType = PHONE_TYPE_FACADE.getPhoneType(dto.getType().trim());
 
         return new Phone(number, phoneType);
     }
