@@ -1,7 +1,5 @@
 package facades;
 
-import entities.Address;
-import entities.City;
 import entities.Hobby;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
