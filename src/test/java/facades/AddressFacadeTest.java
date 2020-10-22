@@ -43,7 +43,6 @@ public class AddressFacadeTest {
             em.getTransaction().commit();
         } finally {
             em.close();
-            emf.close();
         }
     }
 
@@ -83,11 +82,11 @@ public class AddressFacadeTest {
     public void getAddress_existingAddress() {
         // Arrange
         Address expected = address;
-        
+
         // Act
-        Address actual = facade.getAddress(expected.getStreet(), 
+        Address actual = facade.getAddress(expected.getStreet(),
                 expected.getHouseNumber(), expected.getFloor(), expected.getCity());
-        
+
         // Assert
         assertEquals(expected, actual);
     }
@@ -95,9 +94,9 @@ public class AddressFacadeTest {
     @Test
     public void getAddress_newAddress() {
         // Act
-        Address actual = facade.getAddress(address.getStreet(), 
+        Address actual = facade.getAddress(address.getStreet(),
                 address.getHouseNumber(), address.getFloor(), address.getCity());
-        
+
         // Assert
         assertNotNull(actual.getId());
     }

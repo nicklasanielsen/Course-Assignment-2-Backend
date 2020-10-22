@@ -16,13 +16,13 @@ import utils.EMF_Creator;
  * @author Nicklas Nielsen
  */
 public class HobbyFacadeTest {
-    
+
     private static EntityManagerFactory emf;
     private static HobbyFacade facade;
     private static Hobby hobby;
-    
+
     public HobbyFacadeTest() {
-        
+
     }
 
     @BeforeAll
@@ -30,7 +30,7 @@ public class HobbyFacadeTest {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = HobbyFacade.getHobbyFacade(emf);
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
         EntityManager em = emf.createEntityManager();
@@ -41,10 +41,9 @@ public class HobbyFacadeTest {
             em.getTransaction().commit();
         } finally {
             em.close();
-            emf.close();
         }
     }
-    
+
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
@@ -74,38 +73,38 @@ public class HobbyFacadeTest {
             em.close();
         }
     }
-    
+
     @Test
-    public void getHobby_existingHobby(){
+    public void getHobby_existingHobby() {
         // Arrange
         Hobby expected = hobby;
-        
+
         // Act
         Hobby actual = facade.getHobby(expected.getHobbyName(), expected.getHobbyDescription());
-        
+
         // Assert
         assertEquals(expected, actual);
     }
-    
+
     @Test
-    public void getHobby_existingHobbyName(){
+    public void getHobby_existingHobbyName() {
         // Arrange
         Hobby expected = hobby;
-        
+
         // Act
         Hobby actual = facade.getHobby(expected.getHobbyName(), "");
-        
+
         // Assert
         assertEquals(expected, actual);
     }
-    
+
     @Test
-    public void getHobby_notExistingHobby(){
+    public void getHobby_notExistingHobby() {
         // Act
         Hobby actual = facade.getHobby("Tester", "Testing");
-        
+
         // Assert
         assertTrue(actual.getId() == 0);
     }
-    
+
 }

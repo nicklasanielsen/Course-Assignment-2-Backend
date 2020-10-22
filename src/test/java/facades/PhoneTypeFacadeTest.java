@@ -3,7 +3,6 @@ package facades;
 import entities.PhoneType;
 import exceptions.FixedDataNotFoundException;
 import javax.persistence.EntityManagerFactory;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,18 +21,13 @@ public class PhoneTypeFacadeTest {
     private static PhoneType phoneType;
 
     public PhoneTypeFacadeTest() {
-        
+
     }
 
     @BeforeAll
     public static void setupClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = PhoneTypeFacade.getPhoneTypeFacade(emf);
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-        emf.close();
     }
 
     @BeforeEach

@@ -6,7 +6,6 @@ import entities.City;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
-import entities.PhoneType;
 import exceptions.DatabaseException;
 import exceptions.FixedDataNotFoundException;
 import exceptions.InvalidInputException;
@@ -29,7 +28,7 @@ import utils.EMF_Creator;
  * @author Nicklas Nielsen
  */
 public class PersonFacadeTest {
-    
+
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
     private static Person person;
@@ -37,11 +36,11 @@ public class PersonFacadeTest {
     private static Address address;
     private static Phone phone;
     private static Hobby hobby;
-    
+
     public PersonFacadeTest() {
-        
+
     }
-    
+
     @BeforeAll
     public static void setupClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
@@ -56,13 +55,14 @@ public class PersonFacadeTest {
             em.getTransaction().begin();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
-            emf.close();
         }
     }
-    
+
     @BeforeEach
     public void setUp() throws FixedDataNotFoundException {
         EntityManager em = emf.createEntityManager();
@@ -83,7 +83,7 @@ public class PersonFacadeTest {
         } finally {
             em.close();
         }
-        
+
         personDTO = (PersonDTO) convertToDTO(person);
     }
 
@@ -95,51 +95,53 @@ public class PersonFacadeTest {
         personDTO = null;
         address = null;
         phone = null;
-        
+
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
-    
+
     @Test
-    public void createPerson() throws MissingInputException, InvalidInputException, DatabaseException, FixedDataNotFoundException{
+    public void createPerson() throws MissingInputException, InvalidInputException, DatabaseException, FixedDataNotFoundException {
         // Arrange
         PersonDTO expected = personDTO;
-        
+
         // Act
         PersonDTO actual = facade.createPerson(expected);
-        
+
         // Assert
         assertEquals(expected, actual);
     }
-    
+
     @Test
-    public void getPersonsByPhone_existingPersons() throws InvalidInputException{
+    public void getPersonsByPhone_existingPersons() throws InvalidInputException {
         // Arrange
         List<PersonDTO> expected = new ArrayList<>();
         expected.add(personDTO);
         int phoneNumber = 13371337;
-        
+
         // Act
         List<PersonDTO> actual = facade.getPersonsByPhone(phoneNumber);
-        
+
         // Assert
         assertTrue(actual.containsAll(expected));
     }
-    
+
     @Test
-    public void getPersonsByPhone_noExistingPersons() throws InvalidInputException{
+    public void getPersonsByPhone_noExistingPersons() throws InvalidInputException {
         // Arrange
-        int phoneNumber = 0;
-        
+        int phoneNumber = 12345678;
+
         // Act
         List<PersonDTO> actual = facade.getPersonsByPhone(phoneNumber);
-        
+
         // Assert
         assertTrue(actual.isEmpty());
     }

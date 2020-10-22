@@ -3,7 +3,6 @@ package facades;
 import entities.City;
 import exceptions.FixedDataNotFoundException;
 import javax.persistence.EntityManagerFactory;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,11 +28,6 @@ public class CityFacadeTest {
     public static void setupClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = CityFacade.getCityFacade(emf);
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-        emf.close();
     }
 
     @BeforeEach
