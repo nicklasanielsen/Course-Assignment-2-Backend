@@ -86,10 +86,6 @@ public class Hobby implements Serializable {
     
     public void addPerson(Person person){
         persons.add(person);
-        
-        if(person != null){
-            person.addHobby(this);
-        }
     }
 
     @Override

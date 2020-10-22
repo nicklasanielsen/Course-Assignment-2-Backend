@@ -132,7 +132,11 @@ public class Person implements Serializable {
     }
 
     public void setHobbies(List<Hobby> hobbies) {
-        this.hobbies = hobbies;
+        this.hobbies.clear();
+        
+        hobbies.forEach(hobby -> {
+            addHobby(hobby);
+        });
     }
 
     public void addHobbies(List<Hobby> hobbies) {

@@ -100,8 +100,7 @@ public class PersonFacade {
                 em.getTransaction().rollback();
             }
 
-            return convertToDTO(person);
-            //throw new DatabaseException("Personen kunne ikke oprettes, prøv igen senere");
+            throw new DatabaseException("Personen kunne ikke oprettes, prøv igen senere");
         } finally {
             em.close();
         }
