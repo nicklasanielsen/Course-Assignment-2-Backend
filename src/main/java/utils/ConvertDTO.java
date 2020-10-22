@@ -50,7 +50,6 @@ public class ConvertDTO {
         List entities = new ArrayList<>();
 
         for (Object dto : dtos) {
-            System.out.println(dto.getClass().getName());
             entities.add(convertFromDTO(dto));
         }
 
