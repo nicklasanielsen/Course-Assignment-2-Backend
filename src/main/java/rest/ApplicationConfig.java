@@ -18,6 +18,7 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(cors.CorsFilter.class);
         resources.add(exceptions.DatabaseExceptionMapper.class);
         resources.add(exceptions.FixedDataNotFoundExceptionMapper.class);
         resources.add(exceptions.GenericExceptionMapper.class);
