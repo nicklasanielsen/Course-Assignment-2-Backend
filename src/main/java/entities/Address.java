@@ -24,7 +24,7 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     @NamedQuery(name = "Address.deleteAllRows", query = "DELETE FROM Address"),
     @NamedQuery(name = "Address.getAddress", query = "SELECT a FROM Address a "
-            + "WHERE a.city.zip = :zip AND a.street = :street "
+            + "WHERE a.city = :city AND a.street = :street "
             + "AND a.houseNumber = :houseNumber "
             + "AND a.floor = :floor")
 })
@@ -45,7 +45,7 @@ public class Address implements Serializable {
     private String floor;
 
     @JoinColumn(nullable = false)
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private City city;
 
     @OneToMany(mappedBy = "address", cascade = {CascadeType.MERGE, CascadeType.PERSIST})

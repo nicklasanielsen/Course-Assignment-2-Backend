@@ -43,25 +43,22 @@ public class Person implements Serializable {
     private String email;
 
     @JoinColumn(nullable = false)
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Address address;
 
-    @JoinColumn(nullable = false)
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Phone> phones;
 
-    @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Hobby> hobbies;
 
     public Person() {
     }
 
-    public Person(Long id, String firstName, String lastName, String email, Address address) {
-        this.id = id;
+    public Person(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.address = address;
         this.phones = new ArrayList<>();
         this.hobbies = new ArrayList<>();
     }
@@ -116,9 +113,13 @@ public class Person implements Serializable {
         });
     }
 
+    public void addPhones(List<Phone> phones) {
+        phones.forEach(phone -> {
+            addPhone(phone);
+        });
+    }
+
     public void addPhone(Phone phone) {
-        System.out.println("###########33333" + phone.getNumber());
-        System.out.println("###########33333" + phone.getType().getType());
         phones.add(phone);
 
         if (phone != null) {
@@ -134,12 +135,17 @@ public class Person implements Serializable {
         this.hobbies = hobbies;
     }
 
+    public void addHobbies(List<Hobby> hobbies) {
+        hobbies.forEach(hobby -> {
+            addHobby(hobby);
+        });
+    }
+
     public void addHobby(Hobby hobby) {
         hobbies.add(hobby);
 
         if (hobby != null) {
-            this.hobbies.add(hobby);
-            hobby.getPersons().add(this);
+            hobby.addPerson(this);
         }
     }
 

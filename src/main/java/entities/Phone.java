@@ -33,10 +33,10 @@ public class Phone implements Serializable {
     @Column(length = 8, nullable = false)
     private int number;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Person person;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(nullable = false)
     private PhoneType type;
 

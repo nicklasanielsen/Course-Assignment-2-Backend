@@ -1,8 +1,7 @@
 package dtos;
 
-import entities.Hobby;
 import entities.Person;
-import entities.Phone;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,21 +13,21 @@ public class PersonDTO {
     private String fullName;
     private String email;
     private AddressDTO address;
-    private List<PhoneDTO> phones;
-    private List<HobbyDTO> hobbies;
+    private List<PhoneDTO> phones = new ArrayList<>();
+    private List<HobbyDTO> hobbies = new ArrayList<>();
 
     public PersonDTO(Person person) {
         this.fullName = person.getFirstName() + " " + person.getLastName();
         this.email = person.getEmail();
         this.address = new AddressDTO(person.getAddress());
 
-        for (Phone phone : person.getPhones()) {
+        person.getPhones().forEach(phone -> {
             phones.add(new PhoneDTO(phone));
-        }
+        });
 
-        for (Hobby hobby : person.getHobbies()) {
+        person.getHobbies().forEach(hobby -> {
             hobbies.add(new HobbyDTO(hobby));
-        }
+        });
     }
 
     public String getFullName() {
