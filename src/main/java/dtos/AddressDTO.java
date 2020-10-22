@@ -1,6 +1,7 @@
 package dtos;
 
 import entities.Address;
+import java.util.Objects;
 
 /**
  *
@@ -23,5 +24,34 @@ public class AddressDTO {
     public String getCity() {
         return city;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.address);
+        hash = 29 * hash + Objects.hashCode(this.city);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AddressDTO other = (AddressDTO) obj;
+        if (!Objects.equals(this.address, other.address)) {
+            return false;
+        }
+        if (!Objects.equals(this.city, other.city)) {
+            return false;
+        }
+        return true;
+    }
+
 }
