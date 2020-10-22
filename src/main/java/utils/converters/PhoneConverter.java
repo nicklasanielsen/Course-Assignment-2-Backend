@@ -6,7 +6,6 @@ import entities.PhoneType;
 import exceptions.FixedDataNotFoundException;
 import facades.PhoneTypeFacade;
 import javax.persistence.EntityManagerFactory;
-import utils.EMF_Creator;
 
 /**
  *
@@ -14,8 +13,23 @@ import utils.EMF_Creator;
  */
 public class PhoneConverter implements Converter {
 
-    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private static final PhoneTypeFacade PHONE_TYPE_FACADE = PhoneTypeFacade.getPhoneTypeFacade(EMF);
+    private static PhoneConverter instance;
+    private static EntityManagerFactory emf;
+    private static PhoneTypeFacade phoneTypeFacade;
+
+    private PhoneConverter() {
+        // Private constructor to ensure Singleton
+    }
+
+    public static Converter getConverter(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new PhoneConverter();
+            phoneTypeFacade = PhoneTypeFacade.getPhoneTypeFacade(emf);
+        }
+
+        return instance;
+    }
 
     @Override
     public Object toDTO(Object object) {
@@ -28,7 +42,7 @@ public class PhoneConverter implements Converter {
         PhoneDTO dto = castToDTO(object);
 
         int number = dto.getNumber();
-        PhoneType phoneType = PHONE_TYPE_FACADE.getPhoneType(dto.getType().trim());
+        PhoneType phoneType = phoneTypeFacade.getPhoneType(dto.getType().trim());
 
         return new Phone(number, phoneType);
     }

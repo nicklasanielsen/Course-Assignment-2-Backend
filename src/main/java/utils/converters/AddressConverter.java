@@ -7,7 +7,6 @@ import exceptions.FixedDataNotFoundException;
 import facades.AddressFacade;
 import facades.CityFacade;
 import javax.persistence.EntityManagerFactory;
-import utils.EMF_Creator;
 
 /**
  *
@@ -15,9 +14,25 @@ import utils.EMF_Creator;
  */
 public class AddressConverter implements Converter {
 
-    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private static final CityFacade CITY_FACADE = CityFacade.getCityFacade(EMF);
-    private static final AddressFacade ADDRESS_FACADE = AddressFacade.getAddressFacade(EMF);
+    private static AddressConverter instance;
+    private static EntityManagerFactory emf;
+    private static CityFacade cityFacade;
+    private static AddressFacade addressFacade;
+
+    private AddressConverter() {
+        // Private constructor to ensure Singleton
+    }
+
+    public static Converter getConverter(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new AddressConverter();
+            cityFacade = CityFacade.getCityFacade(emf);
+            addressFacade = AddressFacade.getAddressFacade(emf);
+        }
+
+        return instance;
+    }
 
     @Override
     public Object toDTO(Object object) {
@@ -43,8 +58,8 @@ public class AddressConverter implements Converter {
         zip = Integer.parseInt(cityParts[0]);
         cityName = cityParts[1].trim();
 
-        city = CITY_FACADE.getCity(zip, cityName);
-        Address address = ADDRESS_FACADE.getAddress(street, houseNumber, floor, city);
+        city = cityFacade.getCity(zip, cityName);
+        Address address = addressFacade.getAddress(street, houseNumber, floor, city);
 
         return address;
     }

@@ -6,6 +6,7 @@ import exceptions.FixedDataNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.persistence.EntityManagerFactory;
 import utils.converters.AddressConverter;
 import utils.converters.Converter;
 import utils.converters.HobbyConverter;
@@ -18,21 +19,36 @@ import utils.converters.PhoneConverter;
  */
 public class ConvertDTO {
 
+    private static ConvertDTO instance;
+    private static EntityManagerFactory emf;
     private static HashMap<Class, Converter> converters;
 
-    private static void initConverters() {
-        converters = new HashMap<>();
-        converters.put(Person.class, new PersonConverter());
-        converters.put(PersonDTO.class, new PersonConverter());
-        converters.put(Address.class, new AddressConverter());
-        converters.put(AddressDTO.class, new AddressConverter());
-        converters.put(Phone.class, new PhoneConverter());
-        converters.put(PhoneDTO.class, new PhoneConverter());
-        converters.put(Hobby.class, new HobbyConverter());
-        converters.put(HobbyDTO.class, new HobbyConverter());
+    private ConvertDTO(){
+        // Private constructor to ensure Singleton
     }
 
-    private static Converter getConverter(Class requestedClass) {
+    public static ConvertDTO getConvertDTO(EntityManagerFactory _emf){
+        if(instance == null){
+            emf = _emf;
+            instance = new ConvertDTO();
+        }
+        
+        return instance;
+    }
+    
+    private void initConverters() {
+        converters = new HashMap<>();
+        converters.put(Person.class, PersonConverter.getConverter(emf));
+        converters.put(PersonDTO.class, PersonConverter.getConverter(emf));
+        converters.put(Address.class, AddressConverter.getConverter(emf));
+        converters.put(AddressDTO.class, AddressConverter.getConverter(emf));
+        converters.put(Phone.class, PhoneConverter.getConverter(emf));
+        converters.put(PhoneDTO.class, PhoneConverter.getConverter(emf));
+        converters.put(Hobby.class, HobbyConverter.getConverter(emf));
+        converters.put(HobbyDTO.class, HobbyConverter.getConverter(emf));
+    }
+
+    private Converter getConverter(Class requestedClass) {
         if (converters == null) {
             initConverters();
         }
@@ -45,8 +61,8 @@ public class ConvertDTO {
 
         return converter;
     }
-
-    public static List convertFromDTO(List dtos) throws FixedDataNotFoundException {
+    
+    public List convertFromDTO(List dtos) throws FixedDataNotFoundException {
         List entities = new ArrayList<>();
 
         for (Object dto : dtos) {
@@ -56,13 +72,13 @@ public class ConvertDTO {
         return entities;
     }
 
-    public static Object convertFromDTO(Object dto) throws FixedDataNotFoundException {
+    public Object convertFromDTO(Object dto) throws FixedDataNotFoundException {
         Converter converter = getConverter(dto.getClass());
 
         return converter.fromDTO(dto);
     }
 
-    public static List convertToDTO(List entities) {
+    public List convertToDTO(List entities) {
         List dtos = new ArrayList<>();
 
         entities.forEach(entity -> {
@@ -72,7 +88,7 @@ public class ConvertDTO {
         return dtos;
     }
 
-    public static Object convertToDTO(Object entity) {
+    public Object convertToDTO(Object entity) {
         Converter converter = getConverter(entity.getClass());
 
         return converter.toDTO(entity);

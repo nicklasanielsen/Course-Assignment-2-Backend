@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import static utils.ConvertDTO.convertToDTO;
+import utils.ConvertDTO;
 import utils.EMF_Creator;
 
 /**
@@ -31,6 +31,7 @@ public class PersonFacadeTest {
 
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
+    private static ConvertDTO convertDTO;
     private static Person person;
     private static PersonDTO personDTO;
     private static Address address;
@@ -45,6 +46,7 @@ public class PersonFacadeTest {
     public static void setupClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = PersonFacade.getPersonFacade(emf);
+        convertDTO = ConvertDTO.getConvertDTO(emf);
     }
 
     @AfterAll
@@ -84,7 +86,7 @@ public class PersonFacadeTest {
             em.close();
         }
 
-        personDTO = (PersonDTO) convertToDTO(person);
+        personDTO = (PersonDTO) convertDTO.convertToDTO(person);
     }
 
     @AfterEach

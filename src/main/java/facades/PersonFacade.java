@@ -15,7 +15,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-import static utils.ConvertDTO.*;
+import utils.ConvertDTO;
 
 /**
  *
@@ -24,6 +24,7 @@ import static utils.ConvertDTO.*;
 public class PersonFacade {
 
     private static PersonFacade instance;
+    private static ConvertDTO convertDTO;
     private static EntityManagerFactory emf;
 
     private PersonFacade() {
@@ -33,6 +34,7 @@ public class PersonFacade {
     public static PersonFacade getPersonFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
+            convertDTO = ConvertDTO.getConvertDTO(emf);
             instance = new PersonFacade();
         }
 
@@ -80,10 +82,10 @@ public class PersonFacade {
 
         EntityManager em = getEntityManager();
 
-        Person person = (Person) convertFromDTO(incomingData);
-        Address address = (Address) convertFromDTO(incomingData.getAddress());
-        List<Phone> phones = (List<Phone>) convertFromDTO(incomingData.getPhones());
-        List<Hobby> hobbies = (List<Hobby>) convertFromDTO(incomingData.getHobbies());
+        Person person = (Person) convertDTO.convertFromDTO(incomingData);
+        Address address = (Address) convertDTO.convertFromDTO(incomingData.getAddress());
+        List<Phone> phones = (List<Phone>) convertDTO.convertFromDTO(incomingData.getPhones());
+        List<Hobby> hobbies = (List<Hobby>) convertDTO.convertFromDTO(incomingData.getHobbies());
 
         try {
             em.getTransaction().begin();
@@ -94,7 +96,7 @@ public class PersonFacade {
             em.merge(person);
             em.getTransaction().commit();
 
-            return (PersonDTO) convertToDTO(person);
+            return (PersonDTO) convertDTO.convertToDTO(person);
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -118,7 +120,7 @@ public class PersonFacade {
             query.setParameter("number", number);
 
             List<Person> persons = query.getResultList();
-            List<PersonDTO> personDTOs = (List<PersonDTO>) convertToDTO(persons);
+            List<PersonDTO> personDTOs = (List<PersonDTO>) convertDTO.convertToDTO(persons);
 
             return personDTOs;
         } finally {

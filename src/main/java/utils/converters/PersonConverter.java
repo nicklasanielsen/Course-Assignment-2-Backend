@@ -2,12 +2,29 @@ package utils.converters;
 
 import dtos.PersonDTO;
 import entities.Person;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author Nicklas Nielsen
  */
 public class PersonConverter implements Converter {
+
+    private static PersonConverter instance;
+    private static EntityManagerFactory emf;
+
+    private PersonConverter() {
+        // Private constructor to ensure Singleton
+    }
+
+    public static Converter getConverter(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new PersonConverter();
+        }
+
+        return instance;
+    }
 
     @Override
     public Object toDTO(Object object) {
@@ -34,4 +51,5 @@ public class PersonConverter implements Converter {
     private PersonDTO castToDTO(Object dto) {
         return (PersonDTO) dto;
     }
+
 }
