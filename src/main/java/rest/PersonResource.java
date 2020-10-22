@@ -4,6 +4,7 @@ import dtos.PersonDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import exceptions.DatabaseException;
+import exceptions.FixedDataNotFoundException;
 import exceptions.InvalidInputException;
 import exceptions.MissingInputException;
 import facades.PersonFacade;
@@ -39,7 +40,7 @@ public class PersonResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addPerson(String person) throws MissingInputException, InvalidInputException, DatabaseException {
+    public Response addPerson(String person) throws MissingInputException, InvalidInputException, DatabaseException, FixedDataNotFoundException {
         PersonDTO incomingData = GSON.fromJson(person, PersonDTO.class);
         PersonDTO personAdded = FACADE.createPerson(incomingData);
         return Response.ok(personAdded).build();
