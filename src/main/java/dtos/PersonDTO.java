@@ -20,7 +20,10 @@ public class PersonDTO {
     public PersonDTO(Person person) {
         this.fullName = person.getFirstName() + " " + person.getLastName();
         this.email = person.getEmail();
-        this.address = new AddressDTO(person.getAddress());
+
+        if (person.getAddress() != null) {
+            this.address = new AddressDTO(person.getAddress());
+        }
 
         person.getPhones().forEach(phone -> {
             phones.add(new PhoneDTO(phone));

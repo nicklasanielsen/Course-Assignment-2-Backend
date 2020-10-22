@@ -189,4 +189,9 @@ public class Person implements Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Person{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", address=" + address + ", phones=" + phones + ", hobbies=" + hobbies + '}';
+    }
+
 }
