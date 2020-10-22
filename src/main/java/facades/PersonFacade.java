@@ -80,10 +80,10 @@ public class PersonFacade {
 
         EntityManager em = getEntityManager();
 
-        Person person = convertFromDTO(incomingData);
-        Address address = convertFromDTO(incomingData.getAddress());
-        List<Phone> phones = convertPhonesFromDTO(incomingData.getPhones());
-        List<Hobby> hobbies = convertHobbiesFromDTO(incomingData.getHobbies());
+        Person person = (Person) convertFromDTO(incomingData);
+        Address address = (Address) convertFromDTO(incomingData.getAddress());
+        List<Phone> phones = (List<Phone>) convertFromDTO(incomingData.getPhones());
+        List<Hobby> hobbies = (List<Hobby>) convertFromDTO(incomingData.getHobbies());
 
         try {
             em.getTransaction().begin();
@@ -94,7 +94,7 @@ public class PersonFacade {
             em.merge(person);
             em.getTransaction().commit();
 
-            return convertToDTO(person);
+            return (PersonDTO) convertToDTO(person);
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -118,7 +118,7 @@ public class PersonFacade {
             query.setParameter("number", number);
 
             List<Person> persons = query.getResultList();
-            List<PersonDTO> personDTOs = convertToDTO(persons);
+            List<PersonDTO> personDTOs = (List<PersonDTO>) convertToDTO(persons);
 
             return personDTOs;
         } finally {

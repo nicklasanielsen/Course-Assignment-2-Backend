@@ -49,7 +49,5 @@ public class PersonDTO {
     public List<HobbyDTO> getHobbies() {
         return hobbies;
     }
-    
-    
 
 }

@@ -112,8 +112,8 @@ public class Address implements Serializable {
 
     public void addPerson(Person person) {
         persons.add(person);
-        
-        if(person != null){
+
+        if (person != null) {
             person.setAddress(this);
         }
     }
