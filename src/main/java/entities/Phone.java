@@ -21,7 +21,9 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
     @NamedQuery(name = "Phone.deleteAllRows", query = "DELETE FROM Phone"),
     @NamedQuery(name = "Phone.getByPerson", query = "SELECT p FROM Phone p "
-            + "WHERE p.person.id = :id")
+            + "WHERE p.person.id = :id"),
+    @NamedQuery(name = "Phone.getPhone", query = "SELECT p FROM Phone p "
+            + "WHERE p.number = :number AND p.type = :type")
 })
 public class Phone implements Serializable {
 
@@ -67,6 +69,10 @@ public class Phone implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+    
+    public void removePerson(){
+        person = null;
     }
 
     public PhoneType getType() {

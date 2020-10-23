@@ -46,7 +46,7 @@ public class Person implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Address address;
 
-    @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Phone> phones;
 
     @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -101,13 +101,25 @@ public class Person implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+        address.addPerson(this);
+    }
+    
+    public void removeAddress(){
+        address.removePerson(this);
+        address = null;
     }
 
     public List<Phone> getPhones() {
         return phones;
     }
 
-    public void setPhones(List<Phone> phones) {
+    public void setPhones(List<Phone> phones) {        
+        this.phones.forEach(phone -> {
+            phone.removePerson();
+        });
+        
+        this.phones.clear();
+        
         phones.forEach(phone -> {
             addPhone(phone);
         });
@@ -126,12 +138,21 @@ public class Person implements Serializable {
             phone.setPerson(this);
         }
     }
+    
+    public void removePhone(Phone phone){
+        phones.remove(phone);
+        phone.removePerson();
+    }
 
     public List<Hobby> getHobbies() {
         return hobbies;
     }
 
     public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies.forEach(hobby -> {
+            hobby.removePerson(this);
+        });
+        
         this.hobbies.clear();
         
         hobbies.forEach(hobby -> {

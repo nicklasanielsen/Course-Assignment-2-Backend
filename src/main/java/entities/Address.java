@@ -112,10 +112,10 @@ public class Address implements Serializable {
 
     public void addPerson(Person person) {
         persons.add(person);
-
-        if (person != null) {
-            person.setAddress(this);
-        }
+    }
+    
+    public void removePerson(Person person){
+        persons.remove(person);
     }
 
     @Override

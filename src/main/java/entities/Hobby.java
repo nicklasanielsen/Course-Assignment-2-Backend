@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,7 +41,7 @@ public class Hobby implements Serializable {
     @Column(nullable = false, length = 255)
     private String hobbyDescription;
     
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Person> persons;
 
     public Hobby() {
@@ -86,6 +87,10 @@ public class Hobby implements Serializable {
     
     public void addPerson(Person person){
         persons.add(person);
+    }
+    
+    public void removePerson(Person person){
+        persons.remove(person);
     }
 
     @Override

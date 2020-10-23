@@ -24,6 +24,7 @@ import utils.ConvertDTO;
 public class PersonFacade {
 
     private static PersonFacade instance;
+    private static AddressFacade addressFacade;
     private static ConvertDTO convertDTO;
     private static EntityManagerFactory emf;
 
@@ -36,6 +37,7 @@ public class PersonFacade {
             emf = _emf;
             convertDTO = ConvertDTO.getConvertDTO(emf);
             instance = new PersonFacade();
+            addressFacade = AddressFacade.getAddressFacade(emf);
         }
 
         return instance;
@@ -123,6 +125,53 @@ public class PersonFacade {
             List<PersonDTO> personDTOs = (List<PersonDTO>) convertDTO.convertToDTO(persons);
 
             return personDTOs;
+        } finally {
+            em.close();
+        }
+    }
+
+    /*
+    TODO SKAL OPDATERES SÅ DEN SLETTE UBRUGT DATA
+    */
+    public PersonDTO editPerson(long id, PersonDTO incomingData) throws MissingInputException, InvalidInputException, FixedDataNotFoundException, DatabaseException {
+        incomingDataIsValid(incomingData);
+
+        EntityManager em = getEntityManager();
+
+        Person existingPerson;
+        Person person = (Person) convertDTO.convertFromDTO(incomingData);
+        Address address = (Address) convertDTO.convertFromDTO(incomingData.getAddress());
+        List<Phone> phones = (List<Phone>) convertDTO.convertFromDTO(incomingData.getPhones());
+        List<Hobby> hobbies = (List<Hobby>) convertDTO.convertFromDTO(incomingData.getHobbies());
+
+        try {
+            em.getTransaction().begin();
+            existingPerson = em.find(Person.class, id);
+
+            existingPerson.setFirstName(person.getFirstName());
+            existingPerson.setLastName(person.getLastName());
+            existingPerson.setEmail(person.getEmail());
+
+            if (existingPerson.getAddress() != address) {
+                Address temp = existingPerson.getAddress();
+                existingPerson.removeAddress();
+
+                existingPerson.setAddress(address);
+            }
+
+            existingPerson.setPhones(phones);
+            existingPerson.setHobbies(hobbies);
+            
+            em.merge(existingPerson);
+            em.getTransaction().commit();
+
+            return (PersonDTO) convertDTO.convertToDTO(existingPerson);
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw new DatabaseException(e.toString());
         } finally {
             em.close();
         }
