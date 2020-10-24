@@ -177,4 +177,55 @@ public class PersonFacade {
         }
     }
 
+    public List<PersonDTO> getPersonsByHobby(String hobbyName) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("Person.getByHobby");
+            query.setParameter("hobbyName", hobbyName);
+
+            List<Person> persons = query.getResultList();
+            List<PersonDTO> personDTOs = (List<PersonDTO>) convertDTO.convertToDTO(persons);
+
+            return personDTOs;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PersonDTO> getPersonsByCity(String city) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("Person.getByCity");
+            query.setParameter("city", city);
+
+            List<Person> persons = query.getResultList();
+            List<PersonDTO> personDTOs = (List<PersonDTO>) convertDTO.convertToDTO(persons);
+
+            return personDTOs;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PersonDTO> getPersonsByZip(int zip) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("Person.getByZip");
+            query.setParameter("zip", zip);
+
+            List<Person> persons = query.getResultList();
+            List<PersonDTO> personDTOs = (List<PersonDTO>) convertDTO.convertToDTO(persons);
+
+            return personDTOs;
+        } finally {
+            em.close();
+        }
+    }
+
 }

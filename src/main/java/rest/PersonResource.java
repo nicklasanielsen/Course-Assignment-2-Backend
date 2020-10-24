@@ -56,5 +56,26 @@ public class PersonResource {
         PersonDTO personEdited = FACADE.editPerson(id, incomingData);
         return Response.ok(personEdited).build();
     }
+    
+    @GET
+    @Path("hobby/{hobbyName}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getPersonsByHobby(@PathParam("hobbyName") String hobbyName){
+        return Response.ok(FACADE.getPersonsByHobby(hobbyName)).build();
+    }
+    
+    @GET
+    @Path("city/{city}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getPersonsByCity(@PathParam("city") String city){
+        return Response.ok(FACADE.getPersonsByCity(city)).build();
+    }
+    
+    @GET
+    @Path("zip/{zip}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getPersonsByZip(@PathParam("zip") int zip){
+        return Response.ok(FACADE.getPersonsByZip(zip)).build();
+    }
 
 }

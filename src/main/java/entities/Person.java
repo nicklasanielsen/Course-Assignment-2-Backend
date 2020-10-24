@@ -24,7 +24,10 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Person.deleteAllRows", query = "DELETE FROM Person"),
-    @NamedQuery(name = "Person.getByPhone", query = "SELECT p FROM Person p JOIN p.phones n WHERE n.number = :number")
+    @NamedQuery(name = "Person.getByPhone", query = "SELECT p FROM Person p JOIN p.phones n WHERE n.number = :number"),
+    @NamedQuery(name = "Person.getByHobby", query = "SELECT p FROM Person p JOIN p.hobbies h WHERE h.hobbyName = :hobbyName"),
+    @NamedQuery(name = "Person.getByCity", query = "SELECT p FROM Person p WHERE p.address.city.cityName = :city"),
+    @NamedQuery(name = "Person.getByZip", query = "SELECT p FROM Person p WHERE p.address.city.zip = :zip")
 })
 public class Person implements Serializable {
 
