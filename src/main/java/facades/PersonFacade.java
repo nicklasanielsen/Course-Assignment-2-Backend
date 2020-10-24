@@ -233,7 +233,7 @@ public class PersonFacade {
         EntityManager em = getEntityManager();
 
         try {
-            Query query = em.createNamedQuery("Person.getByZip");
+            Query query = em.createNamedQuery("Person.getById");
             query.setParameter("id", id);
 
             List<Person> persons = query.getResultList();
