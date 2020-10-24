@@ -7,6 +7,7 @@ import exceptions.DatabaseException;
 import exceptions.FixedDataNotFoundException;
 import exceptions.InvalidInputException;
 import exceptions.MissingInputException;
+import facades.CityFacade;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
@@ -29,6 +30,7 @@ public class PersonResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
+    private static final CityFacade FACADE2 = CityFacade.getCityFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -76,6 +78,13 @@ public class PersonResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getPersonsByZip(@PathParam("zip") int zip){
         return Response.ok(FACADE.getPersonsByZip(zip)).build();
+    }
+    
+    @GET
+    @Path("city/all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllZips(){
+        return Response.ok(FACADE2.getAllZips()).build();
     }
 
 }

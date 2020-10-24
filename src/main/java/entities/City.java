@@ -21,7 +21,8 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "City.deleteAllRows", query = "DELETE FROM City"),
     @NamedQuery(name = "City.getCityByName", query = "SELECT c FROM City c WHERE c.cityName = :cityName"),
     @NamedQuery(name = "City.getCityByZip", query = "SELECT c FROM City c WHERE c.zip = :zip"),
-    @NamedQuery(name = "City.getCityByNameAndZip", query = "SELECT c FROM City c WHERE c.zip = :zip AND c.cityName = :cityName")
+    @NamedQuery(name = "City.getCityByNameAndZip", query = "SELECT c FROM City c WHERE c.zip = :zip AND c.cityName = :cityName"),
+    @NamedQuery(name = "City.getAllZips", query = "SELECT c FROM City c")
 })
 public class City implements Serializable {
     private static final long serialVersionUID = 1L;

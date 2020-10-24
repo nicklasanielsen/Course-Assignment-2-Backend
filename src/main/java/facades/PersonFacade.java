@@ -227,5 +227,4 @@ public class PersonFacade {
             em.close();
         }
     }
-
 }
