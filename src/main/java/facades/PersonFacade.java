@@ -132,7 +132,7 @@ public class PersonFacade {
 
     /*
     TODO SKAL OPDATERES SÅ DEN SLETTE UBRUGT DATA
-    */
+     */
     public PersonDTO editPerson(long id, PersonDTO incomingData) throws MissingInputException, InvalidInputException, FixedDataNotFoundException, DatabaseException {
         incomingDataIsValid(incomingData);
 
@@ -161,7 +161,7 @@ public class PersonFacade {
 
             existingPerson.setPhones(phones);
             existingPerson.setHobbies(hobbies);
-            
+
             em.merge(existingPerson);
             em.getTransaction().commit();
 
@@ -193,7 +193,7 @@ public class PersonFacade {
             em.close();
         }
     }
-    
+
     public List<PersonDTO> getPersonsByCity(String city) {
 
         EntityManager em = getEntityManager();
@@ -210,7 +210,7 @@ public class PersonFacade {
             em.close();
         }
     }
-    
+
     public List<PersonDTO> getPersonsByZip(int zip) {
 
         EntityManager em = getEntityManager();
@@ -227,7 +227,7 @@ public class PersonFacade {
             em.close();
         }
     }
-    
+
     public List<PersonDTO> getPersonsById(int id) {
 
         EntityManager em = getEntityManager();
@@ -241,6 +241,23 @@ public class PersonFacade {
 
             return personDTOs;
         } finally {
+            em.close();
+        }
+    }
+
+    public PersonDTO deletePerson(Long id) {
+        EntityManager em = getEntityManager();
+
+        try {
+
+            em.getTransaction().begin();
+            Person person = em.find(Person.class, id);
+            Phone phone = em.find(Phone.class, person.getPhones().get(0).getId());
+            em.remove(phone);
+            em.remove(person);
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        } finally{
             em.close();
         }
     }

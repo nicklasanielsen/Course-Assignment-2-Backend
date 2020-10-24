@@ -11,6 +11,7 @@ import facades.CityFacade;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -92,5 +93,13 @@ public class PersonResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getById(@PathParam("id") int id){
         return Response.ok(FACADE.getPersonsById(id)).build();
+    }
+    
+    @DELETE
+    @Path("id/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deletePerson(@PathParam("id") Long id){
+        FACADE.deletePerson(id);
+        return Response.ok("{\"status\":\"removed\"}").build();
     }
 }
