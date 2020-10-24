@@ -27,7 +27,8 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "Person.getByPhone", query = "SELECT p FROM Person p JOIN p.phones n WHERE n.number = :number"),
     @NamedQuery(name = "Person.getByHobby", query = "SELECT p FROM Person p JOIN p.hobbies h WHERE h.hobbyName = :hobbyName"),
     @NamedQuery(name = "Person.getByCity", query = "SELECT p FROM Person p WHERE p.address.city.cityName = :city"),
-    @NamedQuery(name = "Person.getByZip", query = "SELECT p FROM Person p WHERE p.address.city.zip = :zip")
+    @NamedQuery(name = "Person.getByZip", query = "SELECT p FROM Person p WHERE p.address.city.zip = :zip"),
+    @NamedQuery(name = "Person.getById", query = "SELECT p FROM Person p WHERE p.id = :id")
 })
 public class Person implements Serializable {
 

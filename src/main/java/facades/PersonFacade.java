@@ -227,4 +227,21 @@ public class PersonFacade {
             em.close();
         }
     }
+    
+    public List<PersonDTO> getPersonsById(int id) {
+
+        EntityManager em = getEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("Person.getByZip");
+            query.setParameter("id", id);
+
+            List<Person> persons = query.getResultList();
+            List<PersonDTO> personDTOs = (List<PersonDTO>) convertDTO.convertToDTO(persons);
+
+            return personDTOs;
+        } finally {
+            em.close();
+        }
+    }
 }

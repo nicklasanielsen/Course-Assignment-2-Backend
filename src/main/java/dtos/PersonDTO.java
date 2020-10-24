@@ -11,6 +11,7 @@ import java.util.Objects;
  */
 public class PersonDTO {
 
+    private Long id;
     private String fullName;
     private String email;
     private AddressDTO address;
@@ -18,6 +19,7 @@ public class PersonDTO {
     private List<HobbyDTO> hobbies = new ArrayList<>();
 
     public PersonDTO(Person person) {
+        this.id = person.getId();
         this.fullName = person.getFirstName() + " " + person.getLastName();
         this.email = person.getEmail();
 
@@ -54,9 +56,14 @@ public class PersonDTO {
         return hobbies;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.id);
         hash = 89 * hash + Objects.hashCode(this.fullName);
         hash = 89 * hash + Objects.hashCode(this.email);
         hash = 89 * hash + Objects.hashCode(this.address);
@@ -97,7 +104,7 @@ public class PersonDTO {
 
     @Override
     public String toString() {
-        return "PersonDTO{" + "fullName=" + fullName + ", email=" + email + ", address=" + address + ", phones=" + phones + ", hobbies=" + hobbies + '}';
+        return "PersonDTO{" + "id=" + id + ", fullName=" + fullName + ", email=" + email + ", address=" + address + ", phones=" + phones + ", hobbies=" + hobbies + '}';
     }
 
 }

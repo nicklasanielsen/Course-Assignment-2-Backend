@@ -86,5 +86,11 @@ public class PersonResource {
     public Response getAllZips(){
         return Response.ok(FACADE2.getAllZips()).build();
     }
-
+    
+    @GET
+    @Path("id/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getById(@PathParam("id") int id){
+        return Response.ok(FACADE.getPersonsById(id)).build();
+    }
 }
