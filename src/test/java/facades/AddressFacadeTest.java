@@ -17,7 +17,6 @@ import utils.EMF_Creator;
  *
  * @author Nicklas Nielsen
  */
-@Disabled
 public class AddressFacadeTest {
 
     private static EntityManagerFactory emf;
