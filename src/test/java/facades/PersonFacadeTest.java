@@ -28,7 +28,6 @@ import utils.EMF_Creator;
  *
  * @author Nicklas Nielsen
  */
-@Disabled
 public class PersonFacadeTest {
 
     private static EntityManagerFactory emf;

@@ -16,7 +16,6 @@ import utils.EMF_Creator;
  *
  * @author Nicklas Nielsen
  */
-@Disabled
 public class HobbyFacadeTest {
 
     private static EntityManagerFactory emf;

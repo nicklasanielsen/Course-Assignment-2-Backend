@@ -15,7 +15,6 @@ import utils.EMF_Creator;
  *
  * @author Nicklas Nielsen
  */
-@Disabled
 public class PhoneTypeFacadeTest {
 
     private static EntityManagerFactory emf;
